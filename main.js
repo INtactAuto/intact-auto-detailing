@@ -10,36 +10,20 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
-document.getElementById('bookingForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const form = e.target;
-  const status = document.getElementById('formStatus');
+// Formspree Ajax handles form submission via data attributes.
+// Add first-time discount note as a hidden field when checkbox is checked.
+document.getElementById('bookingForm').addEventListener('submit', function () {
   const firstTime = document.getElementById('firstTime').checked;
   const phone = document.getElementById('phone').value;
-
-  status.textContent = 'Sending...';
-
-  const data = new FormData(form);
-  if (firstTime) {
-    data.append('_discount', '$15 first-time customer discount claimed — verify phone: ' + phone);
+  let hidden = document.getElementById('discountNote');
+  if (!hidden) {
+    hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = '_discount_note';
+    hidden.id = 'discountNote';
+    this.appendChild(hidden);
   }
-
-  try {
-    const res = await fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (res.ok) {
-      status.textContent = firstTime
-        ? `✅ Booking sent! We'll be in touch shortly. (First-time discount will be verified via phone.)`
-        : `✅ Booking sent! We'll be in touch within a few hours.`;
-      form.reset();
-    } else {
-      status.textContent = '❌ Something went wrong. Please call us directly to book.';
-    }
-  } catch {
-    status.textContent = '❌ Network error. Please call us directly to book.';
-  }
+  hidden.value = firstTime
+    ? '$15 first-time discount claimed — verify phone: ' + phone
+    : '';
 });
