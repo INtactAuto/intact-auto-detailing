@@ -31,6 +31,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
       headers: { 'Accept': 'application/json' }
     });
 
+    const json = await res.json();
     if (res.ok) {
       status.style.color = '#166534';
       status.textContent = firstTime
@@ -39,7 +40,8 @@ document.getElementById('bookingForm').addEventListener('submit', async function
       form.reset();
     } else {
       status.style.color = '#991b1b';
-      status.textContent = '❌ Something went wrong. Please call us at 501-400-5014 to book.';
+      const errMsg = json.errors ? json.errors.map(e => e.message).join(', ') : JSON.stringify(json);
+      status.textContent = '❌ Error: ' + errMsg;
     }
   } catch {
     status.style.color = '#991b1b';
