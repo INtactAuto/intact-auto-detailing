@@ -25,7 +25,7 @@ document.getElementById('bookingForm').addEventListener('submit', async function
   }
 
   try {
-    const res = await fetch('https://formspree.io/f/xzdqdkdp', {
+    const res = await fetch('https://formspree.io/f/xjgdgpea', {
       method: 'POST',
       body: data,
       headers: { 'Accept': 'application/json' }
