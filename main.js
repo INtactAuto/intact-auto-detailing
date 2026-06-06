@@ -10,18 +10,23 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
-document.getElementById('bookingForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
-  const form = e.target;
-  const status = document.getElementById('formStatus');
-  const firstTime = document.getElementById('firstTime').checked;
-  const phone = document.getElementById('phone').value;
+// Booking form
+const form = document.getElementById('bookingForm');
+const status = document.getElementById('formStatus');
 
-  status.textContent = 'Sending...';
+form.addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const btn = form.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  status.textContent = '';
 
   const data = new FormData(form);
-  if (firstTime) {
-    data.append('_discount_note', '$15 first-time discount claimed — verify phone: ' + phone);
+
+  // Flag first-time discount in the submission
+  if (document.getElementById('firstTime').checked) {
+    data.append('Discount', '$15 first-time discount claimed — verify phone before applying');
   }
 
   try {
@@ -31,20 +36,21 @@ document.getElementById('bookingForm').addEventListener('submit', async function
       headers: { 'Accept': 'application/json' }
     });
 
-    const json = await res.json();
     if (res.ok) {
       status.style.color = '#166534';
-      status.textContent = firstTime
-        ? '✅ Booking sent! We\'ll be in touch shortly. First-time discount will be verified by phone.'
-        : '✅ Booking sent! We\'ll be in touch within a few hours.';
+      status.textContent = '✅ Booking sent! We\'ll be in touch within a few hours.';
       form.reset();
     } else {
+      const json = await res.json();
+      const msg = json.errors ? json.errors.map(e => e.message).join(', ') : 'Unknown error';
       status.style.color = '#991b1b';
-      const errMsg = json.errors ? json.errors.map(e => e.message).join(', ') : JSON.stringify(json);
-      status.textContent = '❌ Error: ' + errMsg;
+      status.textContent = '❌ ' + msg + ' — or call us at 501-400-5014.';
     }
-  } catch {
+  } catch (err) {
     status.style.color = '#991b1b';
     status.textContent = '❌ Network error. Please call us at 501-400-5014 to book.';
   }
+
+  btn.disabled = false;
+  btn.textContent = 'Send Booking Request';
 });
