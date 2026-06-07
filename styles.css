@@ -221,13 +221,16 @@ h2.light { color: var(--white); }
 }
 .card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
 .card-featured {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent);
+  border: 3px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(135deg, #f59e0b, #fcd34d, #f97316, #fbbf24, #f59e0b);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.35);
 }
 .badge-featured {
   position: absolute;
   top: -14px; left: 50%; transform: translateX(-50%);
-  background: var(--accent);
+  background: var(--dark);
   color: var(--white);
   font-size: 0.72rem;
   font-weight: 700;
@@ -235,6 +238,20 @@ h2.light { color: var(--white); }
   border-radius: 99px;
   white-space: nowrap;
   letter-spacing: 0.5px;
+}
+.badge-summer {
+  position: absolute;
+  bottom: -14px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 99px;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
 }
 .card-icon { font-size: 2rem; margin-bottom: 12px; }
 .card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
