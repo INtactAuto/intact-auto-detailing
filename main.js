@@ -26,7 +26,7 @@ form.addEventListener('submit', async function (e) {
 
   // Flag first-time discount in the submission
   if (document.getElementById('firstTime').checked) {
-    data.append('Discount', '$15 first-time discount claimed — verify phone before applying');
+    data.append('Discount', '10% first-time discount claimed — verify phone before applying');
   }
 
   try {
